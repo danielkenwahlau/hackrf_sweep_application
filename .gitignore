@@ -1,0 +1,5 @@
+#ignore binary python files
+/test/*.pyc
+
+#ignore added directory
+/test/gammarf
