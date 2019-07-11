@@ -1,13 +1,15 @@
 import subprocess
 import threading
+import time
+import sys
+from hackrfthread import SpectrumWorker
 
-class mythread(threading.Thread):
-    def __init__(self, i):
-        threading.Thread.__init__(self)
-        self.h = i
-
-    def run(self):
-        print('Value send', self.h)
-
-thread1 = mythread(1)
+thread1 = SpectrumWorker()
 thread1.start()
+
+time.sleep(1)
+
+# testing freqmap
+# freqmap[190:195] = [1,2,3,4,5]
+
+# print(freqmap)
