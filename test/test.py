@@ -1,34 +1,13 @@
-
 import subprocess
 import threading
-from hackrfthread import SpectrumWorker
 
-# out = None
+class mythread(threading.Thread):
+    def __init__(self, i):
+        threading.Thread.__init__(self)
+        self.h = i
 
-# def processStart():
-#     out = subprocess.Popen(['hackrf_sweep', '-f2300:2500', '-w', '1000000', '-B'],
-#                     stdout=subprocess.PIPE)
-#     #stdout,stderr = out.communicate() #this gets it in a tuple. perhaps you don't need this.
+    def run(self):
+        print('Value send', self.h)
 
-
-
-# x = threading.Thread(target=processStart)
-
-# x.start()
-
-# while True:
-#     print('in while loop')
-#     try:
-#         buf = out.stdout.read(4)
-#     except AttributeError as e:
-#         print('error')
-#     if buf:
-#         print('read byte')
-#     else:
-#         break
-    
-# x.join()
-
-x = SpectrumWorker()
-x.start()
-x.join()
+thread1 = mythread(1)
+thread1.start()
