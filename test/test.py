@@ -7,8 +7,6 @@ from hackrfthread import SpectrumWorker
 thread1 = SpectrumWorker()
 thread1.start()
 
-time.sleep(1)
-
 # testing freqmap
 # freqmap[190:195] = [1,2,3,4,5]
 

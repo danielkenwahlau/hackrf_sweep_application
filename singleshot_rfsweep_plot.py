@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy import signal
 import argparse
-from Qt import QtCore
 
 #parse arguements
 parser = argparse.ArgumentParser(description='Plots Hackrf Sweep Singleshot')
