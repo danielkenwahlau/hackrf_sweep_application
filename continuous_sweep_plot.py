@@ -1,18 +1,21 @@
 import time
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy import signal
-
 from modules.hackrfthread import SpectrumWorker
 
-thread1 = SpectrumWorker()
+SymaChArray = [2420000000,2435000000,2451000000,2467000000]
 
+thread1 = SpectrumWorker()
 thread1.start()
 
+#main
 while True:
-    if thread1.freqmap_ready():
-        
-    continue
 
-# print(thread1.freqmap)
+    time.sleep(1)
+    if thread1.is_freqmap_ready():
+        for channel in SymaChArray:
+            print("freq range: {} hz power: {}".format(thread1.freqrange(channel),thread1.pwr(channel)))
+    else:
+        print("freq not ready")
+        continue
+

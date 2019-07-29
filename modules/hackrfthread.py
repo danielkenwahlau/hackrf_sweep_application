@@ -27,19 +27,24 @@ class SpectrumWorker(threading.Thread):
         self.freqmap = None
         self.freqmap_ready = False
         self.daemon = True
+
+        #have to figure out this value
         self.step = None
-
-        self.maxfreq = 2300000000
-        self.minfreq = 2500000000
+        # self.step = 5000000
 
 
-        pdb.set_trace()
+        #hardcoded values
+        self.maxfreq = 2500000000
+        self.minfreq = 2300000000
+
+
+        # pdb.set_trace()
         ON_POSIX = 'posix' in builtin_module_names
         self.cmdpipe = subprocess.Popen([
             'hackrf_sweep',
             '-f2300:2500',
             '-w',
-            '5000000',
+            '1000000',
             '-B'],
             stdout=subprocess.PIPE,
             stderr=open(os.devnull, 'w'),
@@ -91,8 +96,6 @@ class SpectrumWorker(threading.Thread):
 
             self.freqmap[substart:substop] = list(unpacked)
 
-            print(self.freqmap)
-
             try:
                 reclen, start, end = struct.unpack('=iqq',
                         self.cmdpipe.stdout.read(20))
@@ -100,9 +103,8 @@ class SpectrumWorker(threading.Thread):
                 raise Exception("Problem communicating with HACKRF - exit and restart")
 
             if start == firstfreq:
-                pdb.set_trace()
                 if not self.freqmap_ready:
-                    self.us = True
+                    self.freqmap_ready = True
 
         return    
 
@@ -116,8 +118,13 @@ class SpectrumWorker(threading.Thread):
         if freq > self.maxfreq or freq < self.minfreq:
             return
 
-        freqbin = self.freqbin(freq)
+        freqbin = int(self.freqbin(freq))
         return self.freqmap[freqbin]
+    
+    def freqrange(self,freq):
+        bottomfreq = self.minfreq + (self.step * self.freqbin(freq))
+        topfreq = bottomfreq + self.step
+        return (bottomfreq, topfreq)
 
     def join(self, timeout=None):
         self.stoprequest.set()

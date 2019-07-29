@@ -1,13 +1,31 @@
-import subprocess
-import threading
 import time
-import sys
-from hackrfthread import SpectrumWorker
+import numpy as np
+from scipy import signal
+from modules.hackrfthread import SpectrumWorker
+
+SymaChArray = [2420000000,2435000000,2451000000,2467000000]
 
 thread1 = SpectrumWorker()
 thread1.start()
 
-# testing freqmap
-# freqmap[190:195] = [1,2,3,4,5]
+#main
+while True:
 
-# print(freqmap)
+    time.sleep(1)
+    if thread1.is_freqmap_ready():
+        for channel in SymaChArray:
+            print("freq range: {} hz power: {}".format(thread1.freqrange(channel),thread1.pwr(channel)))
+    else:
+        print("freq not ready")
+        continue
+
+#debug
+# while True:
+
+#     time.sleep(1)
+#     if thread1.is_freqmap_ready():
+#         print("freq range: {} power: {}".format(thread1.freqrange(2420000000), thread1.pwr(2420000000)))
+        
+    
+
+#     continue
