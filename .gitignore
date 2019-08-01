@@ -3,3 +3,6 @@
 
 #ignore added directory
 /test/gammarf
+
+#ignore any .pyc files
+*.pyc

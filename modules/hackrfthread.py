@@ -20,7 +20,7 @@ at frequencies extracted from the hackrf_sweep.
 """
 
 class SpectrumWorker(threading.Thread):
-    def __init__(self):
+    def __init__(self,min,max,binWidth):
         self.stoprequest = threading.Event()
         threading.Thread.__init__(self)
 
@@ -32,19 +32,17 @@ class SpectrumWorker(threading.Thread):
         self.step = None
         # self.step = 5000000
 
-
         #hardcoded values
-        self.maxfreq = 2500000000
-        self.minfreq = 2300000000
-
-
-        # pdb.set_trace()
+        self.minfreq = min
+        self.maxfreq = max
+        
+        #Need to format this so that it's in Mhz form and not Hz aka truncate it
+        fstr = "{}:{}".format(self.minfreq/1000000, self.maxfreq/1000000)
         ON_POSIX = 'posix' in builtin_module_names
         self.cmdpipe = subprocess.Popen([
             'hackrf_sweep',
-            '-f2300:2500',
-            '-w',
-            '1000000',
+            '-f{}'.format(fstr),
+            '-w{}'.format(binWidth),
             '-B'],
             stdout=subprocess.PIPE,
             stderr=open(os.devnull, 'w'),
@@ -71,6 +69,7 @@ class SpectrumWorker(threading.Thread):
                     / HRF_PWR_BYTES)
 
             if not self.step:
+                # pdb.set_trace()
                 self.step = int((end - start) / pwr_entries)
                 # self.devmod.set_hackrf_step(self.step)
 
