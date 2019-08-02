@@ -69,7 +69,6 @@ class SpectrumWorker(threading.Thread):
                     / HRF_PWR_BYTES)
 
             if not self.step:
-                # pdb.set_trace()
                 self.step = int((end - start) / pwr_entries)
                 # self.devmod.set_hackrf_step(self.step)
 
